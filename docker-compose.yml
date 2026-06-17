@@ -1,0 +1,16 @@
+services:
+  mongodb:
+    image: mongo:8.0.8
+    container_name: eats-catalog
+    restart: unless-stopped
+
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: master
+      MONGO_INITDB_ROOT_PASSWORD: master
+      MONGO_INITDB_DATABASE: catalog
+
+    ports:
+      - "127.0.0.1:27018:27017"
+
+    volumes:
+      - ./db/mongo/init-mongo.js:/docker-entrypoint-initdb.d/init-mongo.js:ro
