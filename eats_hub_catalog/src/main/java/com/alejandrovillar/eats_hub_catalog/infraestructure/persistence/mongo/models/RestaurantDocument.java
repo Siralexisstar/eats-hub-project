@@ -1,8 +1,8 @@
-package com.alejandrovillar.eats_hub_catalog.infraestructure.mongo.models;
+package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.models;
 
-import com.alejandrovillar.eats_hub_catalog.infraestructure.mongo.enums.PriceRange;
-import com.alejandrovillar.eats_hub_catalog.infraestructure.mongo.records.Address;
-import com.alejandrovillar.eats_hub_catalog.infraestructure.mongo.records.ContactInfo;
+import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.enums.PriceRange;
+import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.records.Address;
+import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.records.ContactInfo;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

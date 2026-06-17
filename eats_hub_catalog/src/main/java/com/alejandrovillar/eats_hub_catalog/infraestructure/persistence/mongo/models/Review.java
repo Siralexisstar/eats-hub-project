@@ -1,4 +1,4 @@
-package com.alejandrovillar.eats_hub_catalog.infraestructure.mongo.models;
+package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.models;
 
 
 import lombok.AllArgsConstructor;

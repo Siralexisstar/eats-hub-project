@@ -1,4 +1,4 @@
-package com.alejandrovillar.eats_hub_catalog.infraestructure.mongo.records;
+package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.records;
 
 import lombok.Builder;
 

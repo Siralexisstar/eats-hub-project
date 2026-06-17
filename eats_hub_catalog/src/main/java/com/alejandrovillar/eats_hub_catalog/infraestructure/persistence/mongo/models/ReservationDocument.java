@@ -1,6 +1,6 @@
-package com.alejandrovillar.eats_hub_catalog.infraestructure.mongo.models;
+package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.models;
 
-import com.alejandrovillar.eats_hub_catalog.infraestructure.mongo.enums.ReservationStatus;
+import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.enums.ReservationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

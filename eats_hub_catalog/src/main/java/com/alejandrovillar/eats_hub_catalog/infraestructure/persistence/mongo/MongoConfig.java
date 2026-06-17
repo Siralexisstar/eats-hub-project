@@ -1,4 +1,4 @@
-package com.alejandrovillar.eats_hub_catalog.infraestructure.mongo;
+package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
