@@ -1,4 +1,4 @@
-package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo;
+package com.alejandrovillar.eats_hub_catalog.infraestructure.config;
 
 import com.mongodb.ConnectionString;
 import com.mongodb.MongoClientSettings;
@@ -22,7 +22,7 @@ import java.util.concurrent.TimeUnit;
 @PropertySource(value = "classpath:mongo-connection.properties")
 public class MongoConfig extends AbstractReactiveMongoConfiguration {
 
-    //Configuring the values
+    //Configuring the values importes from mongo-connection.properties
     @Value("${mongodb.host}")
     private String host;
 
@@ -57,7 +57,6 @@ public class MongoConfig extends AbstractReactiveMongoConfiguration {
     }
 
     //We build the connection in 3 steps
-
     @Bean
     @Primary
     @Override
@@ -65,6 +64,7 @@ public class MongoConfig extends AbstractReactiveMongoConfiguration {
         //Client side --> to build the URL
         final ConnectionString connectionString = new ConnectionString(
                 String.format("mongodb://%s:%d/%s", host, port, database));
+
 
         //Building auth credentials
         final MongoCredential mongoCredential = MongoCredential.createCredential(
