@@ -2,6 +2,7 @@ package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.service
 
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.enums.PriceRange;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.models.RestaurantDocument;
+import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.records.Address;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.repositories.RestaurantRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 
 import java.util.Collection;
+import java.util.Objects;
 
 @Service
 @Slf4j
@@ -51,15 +53,36 @@ public class RestaurantCatalogServiceImpl implements RestaurantCatalogService {
                 .doOnSubscribe(value -> log.info("Restaurant is Empty"));
     }
 
+
+    //Improving this query
     @Override
     public Flux<RestaurantDocument> getRestaurantByAddressCity(String addressCity) {
-        return repo.findByAddressCity(addressCity)
-                .doOnSubscribe(subs -> log.info("Init search with param, {}", subs))
-                .doOnNext(value -> log.info("Getting restaurant by AddressCity, {}", value))
-                .doOnComplete(() -> log.info("Search completed with exit"))
+        return repo.findAll()
+                //search all the addresses
+                .map(RestaurantDocument::getAddress)
+                //validation
+                .filter(Objects::nonNull)
+                //get al the cities
+                .map(Address::city)
+                //validation
+                .filter(Objects::nonNull)
+                .distinct()
+                .collectList()
+                .flatMapMany(cities -> {
+                    if (cities.isEmpty()) {
+                        log.error("No restaurant found in city, {}", addressCity);
+                        return Flux.empty();
+                    }
+
+                    log.info("Restaurant found in city, {}", addressCity);
+                    return repo.findByAddressCity(addressCity)
+                            .doOnNext(value -> log.info("Restaurant found in city, {}", value));
+
+                })
                 .onErrorResume(error -> {
-                    log.error(error.getMessage(), error);
-                    return Flux.empty();
-                });
+                            log.error(error.getMessage(), error);
+                            return Flux.error(new RuntimeException());
+                        }
+                );
     }
 }
