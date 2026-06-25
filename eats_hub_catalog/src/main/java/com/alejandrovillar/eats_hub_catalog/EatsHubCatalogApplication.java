@@ -1,6 +1,6 @@
 package com.alejandrovillar.eats_hub_catalog;
 
-import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.Repo;
+import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.services.RestaurantCatalogService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -13,7 +13,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class EatsHubCatalogApplication implements CommandLineRunner {
 
     @Autowired
-    private Repo repo;
+    private RestaurantCatalogService repo;
 
     public static void main(String[] args) {
         SpringApplication.run(EatsHubCatalogApplication.class, args);
@@ -22,10 +22,11 @@ public class EatsHubCatalogApplication implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
+
         this.repo
-                .findAll() //findAll restaurants
-                .doOnNext(value -> log.info("Printing restaurant, {}", value))
-                .doOnError(error -> log.info("Error", error))
+                .getRestaurantByAddressCity("Austin")
+                //Always remember to subscribe when get all the results
+                .doOnNext(value ->  log.info("Printing values, {}", value))
                 .subscribe();
 
     }

@@ -8,8 +8,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
+import reactor.core.publisher.Mono;
 
-import java.util.Collection;
+import java.util.List;
 import java.util.Objects;
 
 @Service
@@ -19,6 +20,11 @@ public class RestaurantCatalogServiceImpl implements RestaurantCatalogService {
 
     private final RestaurantRepository repo;
 
+
+    @Override
+    public Flux<RestaurantDocument> getAll() {
+        return repo.findAll();
+    }
 
     @Override
     public Flux<RestaurantDocument> getByCuisineType(String cuisineType) {
@@ -34,19 +40,19 @@ public class RestaurantCatalogServiceImpl implements RestaurantCatalogService {
     }
 
     @Override
-    public Flux<RestaurantDocument> getRestaurantByName(String name) {
-        return repo.finByNameStartingWithIgnoreCase(name)
+    public Mono<RestaurantDocument> getRestaurantByName(String name) {
+        return repo.findByNameStartingWithIgnoreCase(name)
                 .doOnSubscribe(subs -> log.info("Init search with param, {}", name))
-                .doOnNext(value -> log.info("Getting restaurant name, {}", value))
-                .doOnComplete(() -> log.info("Search completed with exit"))
+                .doOnNext(value -> log.info("Getting ºrestaurant name, {}", value))
+                .doOnSuccess(value -> log.info("Search completed with exit"))
                 .onErrorResume(error -> {
                     log.error(error.getMessage(), error);
-                    return Flux.empty();
+                    return Mono.empty();
                 });
     }
 
     @Override
-    public Flux<RestaurantDocument> getRestaurantByPriceRange(Collection<PriceRange> priceRanges) {
+    public Flux<RestaurantDocument> getRestaurantByPriceRange(List<PriceRange> priceRanges) {
         return repo.findByPriceRangeIn(priceRanges)
                 //Could be used to return cache data
                 .switchIfEmpty(Flux.error(new RuntimeException()))
