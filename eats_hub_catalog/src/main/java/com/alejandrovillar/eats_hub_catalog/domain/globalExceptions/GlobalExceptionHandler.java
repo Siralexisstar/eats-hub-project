@@ -1,5 +1,6 @@
 package com.alejandrovillar.eats_hub_catalog.domain.globalExceptions;
 
+import com.alejandrovillar.eats_hub_catalog.domain.exception.BusinessException;
 import com.alejandrovillar.eats_hub_catalog.domain.exception.ResourceNotFoundException;
 import jakarta.validation.ConstraintViolationException;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -18,6 +19,16 @@ public class GlobalExceptionHandler {
 
   @ExceptionHandler(ResourceNotFoundException.class)
   public ResponseEntity<Map<String, String>> handleResourceNotFound(ResourceNotFoundException ex) {
+    Map<String, String> response = new HashMap<>();
+
+    response.put("error", "Not found");
+    response.put("message", ex.getMessage());
+
+    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+  }
+
+  @ExceptionHandler(BusinessException.class)
+  public ResponseEntity<Map<String, String>> handleBusinessException(BusinessException ex) {
     Map<String, String> response = new HashMap<>();
 
     response.put("error", "Not found");

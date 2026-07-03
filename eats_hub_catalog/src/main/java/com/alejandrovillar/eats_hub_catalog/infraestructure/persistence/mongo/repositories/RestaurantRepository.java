@@ -23,4 +23,6 @@ public interface RestaurantRepository extends ReactiveMongoRepository<Restaurant
     Flux<RestaurantDocument> findByPriceRangeIn(List<PriceRange> priceRanges);
 
     Flux<RestaurantDocument> findByAddressCity(String addressCity);
+
+
 }

@@ -39,6 +39,8 @@ public class RestaurantDocument {
 
     private String logoUrl;
 
+    private String closeAt;
+
     private ContactInfo contactInfo;
 
     private Review review;
