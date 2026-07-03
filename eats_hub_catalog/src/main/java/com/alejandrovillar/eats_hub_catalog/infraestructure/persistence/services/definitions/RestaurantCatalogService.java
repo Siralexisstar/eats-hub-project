@@ -1,4 +1,4 @@
-package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.services;
+package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.services.definitions;
 
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.enums.PriceRange;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.models.RestaurantDocument;

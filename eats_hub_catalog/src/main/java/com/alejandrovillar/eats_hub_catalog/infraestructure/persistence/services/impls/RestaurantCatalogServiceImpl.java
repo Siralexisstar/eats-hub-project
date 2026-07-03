@@ -1,9 +1,10 @@
-package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.services;
+package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.services.impls;
 
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.enums.PriceRange;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.models.RestaurantDocument;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.records.Address;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.repositories.RestaurantRepository;
+import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.services.definitions.RestaurantCatalogService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
