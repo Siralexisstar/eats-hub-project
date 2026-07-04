@@ -9,7 +9,6 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Document("reservations")
@@ -19,23 +18,17 @@ import java.util.UUID;
 @AllArgsConstructor
 public class ReservationDocument {
 
-    //We put our Ids with UUID
     @Id
     private UUID id;
-
     @Indexed
     private String restaurantId;
-
     private String customerId;
-
+    //@Field("name")
     private String customerName;
-
     private String customerEmail;
-
-    private LocalDateTime time;
-
+    private String date;
+    private String time;
     private Integer partySize;
-
     @Indexed
     private ReservationStatus status;
 
