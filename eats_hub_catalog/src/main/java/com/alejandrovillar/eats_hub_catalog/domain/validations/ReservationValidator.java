@@ -8,6 +8,7 @@ import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.mo
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.models.RestaurantDocument;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.repositories.RestaurantRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import reactor.core.publisher.Mono;
 
@@ -21,15 +22,28 @@ import java.util.UUID;
 //This class ensures logic business validatons
 //The @GlobalExcpetionHandler only transforms the ouput
 @Component
+@Slf4j
 @AllArgsConstructor
 public class ReservationValidator {
 
     private final RestaurantRepository restaurantRepository;
     private final PlannerMSClientMock plannerMSClientMock;
 
+
+    //Method to reduce the validations
+    //How it works? Read all the validations and detect what it is. Then throws the error.
     public <T> Mono<Void> applyValidations(T input, List<BusinessValidator<T>> validations) {
 
-        return null;
+        if (validations.isEmpty()) {
+            return Mono.empty();
+        }
+
+        return validations.stream()
+                .reduce(
+                        Mono.empty(),
+                        (chain, validator) -> chain.then(validator.validate(input)),
+                        Mono::then
+                );
     }
 
     //Validate the restaurant it's not closed for sure
@@ -39,10 +53,12 @@ public class ReservationValidator {
             final var restaurantId = UUID.fromString(reservation.getRestaurantId());
 
             return restaurantRepository.findById(restaurantId)
+                    .doOnNext(value -> log.info("Validating woorking hours for the Restaurante, {}", value.getName()))
                     .switchIfEmpty(Mono.error(new ResourceNotFoundException("Restaurant not found")))
                     .flatMap(restaurant -> {
                         if (this.isRestaurantClosed(restaurant, reservation.getTime())) {
-                            return Mono.error(new BusinessException("Restaurant already closed"));
+                            return Mono.error(new BusinessException("Sorry the Restaurant it's closed for " +
+                                    "the scheduled time"));
                         }
 
                         return Mono.empty();
@@ -57,29 +73,12 @@ public class ReservationValidator {
             final var restaurantId = UUID.fromString(reservation.getRestaurantId());
 
             return restaurantRepository.findById(restaurantId)
+                    .doOnNext(value -> log.info("Validating the availabilityy of the restaurant"))
                     .switchIfEmpty(Mono.error(new ResourceNotFoundException("Restaurant not found")))
                     .then(plannerMSClientMock.verifyAvailability(reservation.getDate(), reservation.getTime(), restaurantId))
                     .flatMap(isAvailability -> {
-                        if (isAvailability) {
+                        if (!isAvailability) {
                             return Mono.error(new ResourceNotFoundException("Restaurant is not avaliable"));
-                        }
-                        return Mono.empty();
-                    });
-        };
-    }
-
-    //TODO: REVIEW THIS NOT MUCH HAPPY WITH  THIS VALIDATION
-    public BusinessValidator<ReservationDocument> validateRestaurantIdBeforeUpdate() {
-
-        return reservation -> {
-
-            final var restaurantId = UUID.fromString(reservation.getRestaurantId());
-
-            return restaurantRepository.findById(restaurantId)
-                    .switchIfEmpty(Mono.error(new ResourceNotFoundException("Restaurant not found")))
-                    .flatMap(restaurant -> {
-                        if (!restaurant.getId().equals(UUID.fromString(reservation.getRestaurantId()))) {
-                            return Mono.error(new BusinessException("Restaurant ID must be the same as the original restaurant"));
                         }
                         return Mono.empty();
                     });

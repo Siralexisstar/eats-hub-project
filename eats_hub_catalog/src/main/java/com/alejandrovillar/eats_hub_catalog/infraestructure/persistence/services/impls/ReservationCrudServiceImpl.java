@@ -1,6 +1,7 @@
 package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.services.impls;
 
 import com.alejandrovillar.eats_hub_catalog.domain.exception.ResourceNotFoundException;
+import com.alejandrovillar.eats_hub_catalog.domain.validations.ReservationValidator;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.enums.ReservationStatus;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.models.ReservationDocument;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.repositories.ReservationRepository;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
@@ -24,24 +26,26 @@ public class ReservationCrudServiceImpl implements ReservationCrudService {
 
     private final RestaurantRepository restaurantRepository;
 
+    private final ReservationValidator reservationValidator;
+
 
     @Override
     public Mono<ReservationDocument> createReservation(ReservationDocument reservationDocument) {
-        return restaurantRepository
-                .findById(UUID.fromString(reservationDocument.getRestaurantId()))
-                .switchIfEmpty(Mono.error(new ResourceNotFoundException("Not Restaurant found with this id")))
-                .flatMap(restaurant -> {
 
-                            if (Objects.isNull(reservationDocument.getStatus())) {
-                                log.info("Setting the status to PENDING, and saving");
-                                reservationDocument.setStatus(ReservationStatus.PENDING);
-                            }
-                            log.info("Saving restaurant with status, {}", reservationDocument.getStatus());
-                            return reservationRepository.save(reservationDocument);
-                        }
-                );
+        //Taking profit for the type inference
+        // the var its the same that --> List<BusinessValidator<ReservationDocument>> validations
+        //calculate the type in execution time.
+        final var validations = List.of(
+                this.reservationValidator.validateRestaurantNotClosed()
+        );
 
-
+        return reservationValidator.applyValidations(reservationDocument, validations)
+                .then(Mono.defer(() -> {
+                    if (Objects.isNull(reservationDocument.getStatus())) {
+                        reservationDocument.setStatus(ReservationStatus.PENDING);
+                    }
+                    return reservationRepository.save(reservationDocument);
+                }));
     }
 
     //Coge la reserva por el id del restaurante por reservation
@@ -73,17 +77,30 @@ public class ReservationCrudServiceImpl implements ReservationCrudService {
 
     @Override
     public Mono<ReservationDocument> updateReservation(UUID reservationId, ReservationDocument reservationDocument) {
+
+        final var validations = List.of(
+                this.reservationValidator.validateRestaurantNotClosed(),
+                this.reservationValidator.validateAvailability()
+        );
+
         return reservationRepository.findById(reservationId)
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("Reservation not found with this id")))
+                //with this validation we can be sure that the reservation it's the same
+                //if validations pass we return the samen data
                 .flatMap(existingReservation -> {
-                    existingReservation.setRestaurantId(reservationDocument.getRestaurantId());
-                    existingReservation.setCustomerId(reservationDocument.getCustomerId());
-                    existingReservation.setCustomerName(reservationDocument.getCustomerName());
-                    existingReservation.setCustomerEmail(reservationDocument.getCustomerEmail());
-                    existingReservation.setTime(reservationDocument.getTime());
-                    existingReservation.setPartySize(reservationDocument.getPartySize());
+                    reservationDocument.setRestaurantId(existingReservation.getRestaurantId());
+
+                    return reservationValidator.applyValidations(reservationDocument, validations)
+                            .thenReturn(existingReservation);
+                })
+                .flatMap(existingReservation -> {
                     existingReservation.setStatus(reservationDocument.getStatus());
                     existingReservation.setNotes(reservationDocument.getNotes());
+                    existingReservation.setDate(reservationDocument.getDate());
+                    existingReservation.setTime(reservationDocument.getTime());
+                    existingReservation.setCustomerName(reservationDocument.getCustomerName());
+                    existingReservation.setPartySize(reservationDocument.getPartySize());
+
 
                     return reservationRepository.save(existingReservation);
                 });
