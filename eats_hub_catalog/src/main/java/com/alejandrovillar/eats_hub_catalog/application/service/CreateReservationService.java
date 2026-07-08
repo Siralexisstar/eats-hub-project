@@ -65,6 +65,6 @@ public class CreateReservationService implements CreateReservationUseCase {
 
                     return reservationRepositoryPort.save(reservation);
                 })
-                .doOnSuccess(value -> log.info("Reservation created successfully, {}", value));
+                .doOnSuccess(value -> log.info("Reservation created successfully, {}", value.getId()));
     }
 }
