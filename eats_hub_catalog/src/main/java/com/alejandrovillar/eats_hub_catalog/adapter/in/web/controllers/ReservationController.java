@@ -44,7 +44,8 @@ public class ReservationController {
         //first we need to transform to command
         // second transform to response
         // at least x2 mappers
-        return request.map(this::toCommand)
+        return request
+                .map(this::toCommand)
                 .flatMap(createReservationUseCase::create)
                 .map(this::toResponse);
     }
