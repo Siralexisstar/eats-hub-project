@@ -475,7 +475,13 @@ Reservation -> ReservationResponse
 
 ## 7. Qué pasa con `ReservationValidator`
 
-La clase antigua `ReservationValidator` no desaparece mágicamente.
+La clase antigua `ReservationValidator` no desaparece mágicamente. En el switch hexagonal la sacamos de `domain` y queda como pieza legacy técnica en:
+
+```text
+infraestructure.persistence.services.validations.ReservationValidator
+```
+
+Esto es importante porque depende de Mongo, Spring y `PlannerMSClientMock`; por tanto no puede vivir en dominio.
 
 Ahora mismo su responsabilidad se está repartiendo:
 

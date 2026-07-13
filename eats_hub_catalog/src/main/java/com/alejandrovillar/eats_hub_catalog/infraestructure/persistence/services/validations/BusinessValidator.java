@@ -1,4 +1,4 @@
-package com.alejandrovillar.eats_hub_catalog.domain.validations;
+package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.services.validations;
 
 import reactor.core.publisher.Mono;
 

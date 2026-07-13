@@ -1,5 +1,4 @@
-package com.alejandrovillar.eats_hub_catalog.domain.validations;
-
+package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.services.validations;
 
 import com.alejandrovillar.eats_hub_catalog.domain.exception.BusinessException;
 import com.alejandrovillar.eats_hub_catalog.domain.exception.ResourceNotFoundException;
@@ -18,9 +17,6 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-//Class to configure the diferents validations
-//This class ensures logic business validatons
-//The @GlobalExcpetionHandler only transforms the ouput
 @Component
 @Slf4j
 @AllArgsConstructor
@@ -29,11 +25,7 @@ public class ReservationValidator {
     private final RestaurantRepository restaurantRepository;
     private final PlannerMSClientMock plannerMSClientMock;
 
-
-    //Method to reduce the validations
-    //How it works? Read all the validations and detect what it is. Then throws the error.
     public <T> Mono<Void> applyValidations(T input, List<BusinessValidator<T>> validations) {
-
         if (validations.isEmpty()) {
             return Mono.empty();
         }
@@ -46,19 +38,16 @@ public class ReservationValidator {
                 );
     }
 
-    //Validate the restaurant it's not closed for sure
     public BusinessValidator<ReservationDocument> validateRestaurantNotClosed() {
-
         return reservation -> {
             final var restaurantId = UUID.fromString(reservation.getRestaurantId());
 
             return restaurantRepository.findById(restaurantId)
-                    .doOnNext(value -> log.info("Validating woorking hours for the Restaurante, {}", value.getName()))
+                    .doOnNext(value -> log.info("Validating working hours for restaurant {}", value.getName()))
                     .switchIfEmpty(Mono.error(new ResourceNotFoundException("Restaurant not found")))
                     .flatMap(restaurant -> {
                         if (this.isRestaurantClosed(restaurant, reservation.getTime())) {
-                            return Mono.error(new BusinessException("Sorry the Restaurant it's closed for " +
-                                    "the scheduled time"));
+                            return Mono.error(new BusinessException("Restaurant closed"));
                         }
 
                         return Mono.empty();
@@ -66,36 +55,37 @@ public class ReservationValidator {
         };
     }
 
-    //Validate the viability for the restaurant
     public BusinessValidator<ReservationDocument> validateAvailability() {
         return reservation -> {
-
             final var restaurantId = UUID.fromString(reservation.getRestaurantId());
 
             return restaurantRepository.findById(restaurantId)
-                    .doOnNext(value -> log.info("Validating the availabilityy of the restaurant"))
+                    .doOnNext(value -> log.info("Validating availability of restaurant {}", value.getName()))
                     .switchIfEmpty(Mono.error(new ResourceNotFoundException("Restaurant not found")))
                     .then(plannerMSClientMock.verifyAvailability(reservation.getDate(), reservation.getTime(), restaurantId))
-                    .flatMap(isAvailability -> {
-                        if (!isAvailability) {
-                            return Mono.error(new ResourceNotFoundException("Restaurant is not avaliable"));
+                    .flatMap(isAvailable -> {
+                        if (!isAvailable) {
+                            return Mono.error(new BusinessException("Restaurant is not available"));
                         }
                         return Mono.empty();
                     });
         };
     }
 
-
-    //method to see if a restaurant is closed or not
     private boolean isRestaurantClosed(RestaurantDocument restaurantDocument, String reservationTime) {
+        if (Objects.isNull(restaurantDocument.getCloseAt()) || Objects.isNull(reservationTime)) {
+            return true;
+        }
 
-        if (Objects.isNull(restaurantDocument.getCloseAt()) || Objects.isNull(reservationTime)) return true;
+        LocalTime closeTime = LocalTime.parse(
+                restaurantDocument.getCloseAt(),
+                DateTimeFormatter.ofPattern("HH:mm")
+        );
+        LocalTime reservationLocalTime = LocalTime.parse(
+                reservationTime,
+                DateTimeFormatter.ofPattern("HH:mm")
+        );
 
-        LocalTime closeTimeLocalTime = LocalTime.parse(restaurantDocument.getCloseAt(), DateTimeFormatter.ofPattern("HH:mm"));
-        LocalTime reservationTimeLocalTime = LocalTime.parse(reservationTime, DateTimeFormatter.ofPattern("HH:mm"));
-
-        //If is after it's closed
-        return reservationTimeLocalTime.isAfter(closeTimeLocalTime);
-
+        return reservationLocalTime.isAfter(closeTime);
     }
 }

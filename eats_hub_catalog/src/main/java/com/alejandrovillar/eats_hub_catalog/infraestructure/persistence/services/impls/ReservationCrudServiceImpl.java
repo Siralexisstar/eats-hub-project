@@ -1,12 +1,12 @@
 package com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.services.impls;
 
 import com.alejandrovillar.eats_hub_catalog.domain.exception.ResourceNotFoundException;
-import com.alejandrovillar.eats_hub_catalog.domain.validations.ReservationValidator;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.enums.ReservationStatus;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.models.ReservationDocument;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.repositories.ReservationRepository;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.mongo.repositories.RestaurantRepository;
 import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.services.definitions.ReservationCrudService;
+import com.alejandrovillar.eats_hub_catalog.infraestructure.persistence.services.validations.ReservationValidator;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

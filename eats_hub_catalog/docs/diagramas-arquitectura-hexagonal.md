@@ -212,7 +212,7 @@ flowchart TB
 
     DOMAIN --> DMODEL["domain.model"]
     DOMAIN --> DEX["domain.exception"]
-    DOMAIN --> DVALID["domain.validations<br/>legacy temporal"]
+    INFRA --> LEGACY_VALID["infraestructure.persistence.services.validations<br/>legacy temporal"]
 
     APPLICATION --> PIN["application.port.in"]
     APPLICATION --> POUT["application.port.out"]
@@ -233,7 +233,7 @@ flowchart TB
 
 Notas:
 
-- `domain.validations.ReservationValidator` sigue siendo legacy temporal mientras exista el flujo viejo.
+- `infraestructure.persistence.services.validations.ReservationValidator` sigue siendo legacy temporal mientras exista el flujo viejo.
 - `interfaces.*` también queda como parte del diseño anterior.
 - El nuevo flujo hexagonal debería crecer bajo `domain`, `application`, `adapter` y `config`.
 
