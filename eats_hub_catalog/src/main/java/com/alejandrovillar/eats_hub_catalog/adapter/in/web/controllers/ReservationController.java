@@ -7,6 +7,7 @@ import com.alejandrovillar.eats_hub_catalog.application.port.in.CreateReservatio
 import com.alejandrovillar.eats_hub_catalog.application.port.in.CreateReservationUseCase;
 import com.alejandrovillar.eats_hub_catalog.domain.model.Reservation;
 import io.swagger.v3.oas.annotations.Operation;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -39,12 +40,12 @@ public class ReservationController {
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a Reservation")
-    public  Mono<CreateReservationResponse> createReservationResponseMono(@RequestBody Mono<CreateReservationRequest> request) {
+    public Mono<CreateReservationResponse> createReservationResponseMono(@Valid @RequestBody CreateReservationRequest request) {
 
         //first we need to transform to command
         // second transform to response
         // at least x2 mappers
-        return request
+        return Mono.just(request)
                 .map(this::toCommand)
                 .flatMap(createReservationUseCase::create)
                 .map(this::toResponse);

@@ -31,7 +31,7 @@ public class GlobalExceptionHandler {
   public ResponseEntity<Map<String, String>> handleBusinessException(BusinessException ex) {
     Map<String, String> response = new HashMap<>();
 
-    response.put("error", "Business role violation");
+    response.put("error", "Business rule violation");
     response.put("message", ex.getMessage());
 
     return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
