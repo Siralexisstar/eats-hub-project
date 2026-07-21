@@ -24,6 +24,12 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 @ExtendWith(MockitoExtension.class)
+/**
+ * Unit test for the reactive reservation controller.
+ */
+/**
+ * Unit test for the reactive reservation controller.
+ */
 class ReservationControllerTest {
 
     @Mock

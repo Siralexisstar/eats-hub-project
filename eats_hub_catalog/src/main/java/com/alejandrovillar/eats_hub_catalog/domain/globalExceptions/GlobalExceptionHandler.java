@@ -15,6 +15,12 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 @RestControllerAdvice
+/**
+ * Global REST exception handler that converts application exceptions into HTTP responses.
+ */
+/**
+ * Global REST exception handler that converts application exceptions into HTTP responses.
+ */
 public class GlobalExceptionHandler {
 
   @ExceptionHandler(ResourceNotFoundException.class)

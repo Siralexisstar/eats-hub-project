@@ -13,9 +13,18 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
 
+/**
+ * Reactive REST controller that exposes reservation endpoints.
+ * <p>
+ * The controller acts as an inbound adapter in the hexagonal architecture: it converts HTTP DTOs
+ * into application commands and maps domain results back to HTTP responses.
+ */
 @RestController
 @RequestMapping("/reservations")
 @RequiredArgsConstructor
+/**
+ * Reactive REST controller that exposes reservation endpoints.
+ */
 public class ReservationController {
 
     /* We should call to this interface to maintain the hexag. architecuture
@@ -37,9 +46,26 @@ public class ReservationController {
     private final CreateReservationUseCase createReservationUseCase;
 
     /* Good Practice have the controller wit public instead private */
+    /**
+     * Creates a reservation from the HTTP request payload.
+     *
+     * @param request validated reservation request body
+     * @return a reactive response containing the created reservation data
+     */
+    /**
+     * Creates a reservation from the HTTP request payload.
+     *
+     * @param request validated reservation request body
+     * @return reactive response containing the created reservation data
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     @Operation(summary = "Create a Reservation")
+    /**
+     * Creates a reservation using the provided request or document.
+     *
+     * @return reactive result of the operation
+     */
     public Mono<CreateReservationResponse> createReservationResponseMono(@Valid @RequestBody CreateReservationRequest request) {
 
         //first we need to transform to command
@@ -53,6 +79,12 @@ public class ReservationController {
 
     //Mappers
 
+    /**
+     * Maps an HTTP request DTO to the application command consumed by the use case.
+     *
+     * @param request inbound reservation request
+     * @return command with the reservation data required by the application layer
+     */
     private CreateReservationCommand toCommand(CreateReservationRequest request) {
 
         return new CreateReservationCommand(
@@ -68,6 +100,12 @@ public class ReservationController {
     }
 
 
+    /**
+     * Maps a domain reservation into the outbound HTTP response DTO.
+     *
+     * @param reservation created reservation domain object
+     * @return response DTO returned to the client
+     */
     private CreateReservationResponse toResponse(Reservation reservation) {
 
         return new CreateReservationResponse(

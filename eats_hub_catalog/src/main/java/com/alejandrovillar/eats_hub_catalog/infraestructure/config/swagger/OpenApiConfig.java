@@ -8,6 +8,12 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
+/**
+ * OpenAPI configuration for documenting the catalog API.
+ */
+/**
+ * OpenAPI configuration for documenting the catalog API.
+ */
 public class OpenApiConfig {
 
   @Bean

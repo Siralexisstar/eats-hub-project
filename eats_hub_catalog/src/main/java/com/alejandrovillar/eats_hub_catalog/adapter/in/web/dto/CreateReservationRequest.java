@@ -9,6 +9,30 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.UUID;
 
+/**
+ * Request payload used to create a reservation through the REST API.
+ *
+ * @param restaurantId restaurant identifier to reserve
+ * @param customerId external customer identifier
+ * @param customerName customer display name
+ * @param customerEmail customer email address
+ * @param date reservation date
+ * @param time reservation time
+ * @param partySize number of guests
+ * @param notes optional reservation notes
+ */
+/**
+ * Request payload used to create a reservation through the REST API.
+ *
+ * @param restaurantId restaurant identifier to reserve
+ * @param customerId external customer identifier
+ * @param customerName customer display name
+ * @param customerEmail customer email address
+ * @param date reservation date
+ * @param time reservation time
+ * @param partySize number of guests
+ * @param notes optional reservation notes
+ */
 public record CreateReservationRequest(
 
         @NotNull(message = "Restaurant id is required")

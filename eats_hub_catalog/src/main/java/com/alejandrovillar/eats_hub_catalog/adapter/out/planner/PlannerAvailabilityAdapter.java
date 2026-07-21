@@ -12,6 +12,12 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
+/**
+ * Planner outbound adapter that checks restaurant availability through the mock planner client.
+ */
+/**
+ * Planner outbound adapter that checks availability through the mock planner client.
+ */
 public class PlannerAvailabilityAdapter implements AvailabilityPort {
 
     private final PlannerMSClientMock plannerMSClientMock;

@@ -17,12 +17,23 @@ import java.util.Objects;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+/**
+ * Business service implementation for reading restaurants and mapping them to response DTOs.
+ */
+/**
+ * Business service implementation for reading restaurants and mapping them to response DTOs.
+ */
 public class RestaurantBusinessServiceImpl implements RestaurantBusinessService {
 
     private final RestaurantCatalogService restaurantCatalogService;
     private final RestaurantMapper restaurantMapper;
 
     @Override
+    /**
+     * Reads all restaurants as response DTOs.
+     *
+     * @return reactive result of the operation
+     */
     public Flux<RestaurantResponse> readAll() {
         log.info("Reading all restaurants");
 
@@ -32,6 +43,11 @@ public class RestaurantBusinessServiceImpl implements RestaurantBusinessService 
     }
 
     @Override
+    /**
+     * Reads restaurants by cuisine type as response DTOs.
+     *
+     * @return reactive result of the operation
+     */
     public Flux<RestaurantResponse> readByCuisineType(String cuisineType) {
         log.info("Reading restaurants by cuisine type: {}", cuisineType);
 
@@ -41,6 +57,11 @@ public class RestaurantBusinessServiceImpl implements RestaurantBusinessService 
     }
 
     @Override
+    /**
+     * Reads a restaurant by name as a response DTO.
+     *
+     * @return reactive result of the operation
+     */
     public Mono<RestaurantResponse> readByName(String name) {
         log.info("Reading restaurants by name: {}", name);
 
@@ -56,6 +77,11 @@ public class RestaurantBusinessServiceImpl implements RestaurantBusinessService 
     }
 
     @Override
+    /**
+     * Reads restaurants matching the provided price ranges.
+     *
+     * @return reactive result of the operation
+     */
     public Flux<RestaurantResponse> readByPriceRangeIn(List<PriceRange> priceRanges) {
         log.info("Reading restaurants by price ranges: {}", priceRanges);
 
@@ -65,6 +91,11 @@ public class RestaurantBusinessServiceImpl implements RestaurantBusinessService 
     }
 
     @Override
+    /**
+     * Reads restaurants located in the provided city.
+     *
+     * @return reactive result of the operation
+     */
     public Flux<RestaurantResponse> readByCity(String city) {
         log.info("Reading restaurants by city: {}", city);
 

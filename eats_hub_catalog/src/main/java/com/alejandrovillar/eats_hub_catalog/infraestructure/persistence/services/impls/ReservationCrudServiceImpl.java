@@ -20,6 +20,12 @@ import java.util.UUID;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+/**
+ * CRUD service implementation for reservation documents with business validations.
+ */
+/**
+ * CRUD service implementation for reservation documents with business validations.
+ */
 public class ReservationCrudServiceImpl implements ReservationCrudService {
 
     private final ReservationRepository reservationRepository;
@@ -30,6 +36,11 @@ public class ReservationCrudServiceImpl implements ReservationCrudService {
 
 
     @Override
+    /**
+     * Creates a reservation using the provided request or document.
+     *
+     * @return reactive result of the operation
+     */
     public Mono<ReservationDocument> createReservation(ReservationDocument reservationDocument) {
 
         //Taking profit for the type inference
@@ -50,6 +61,11 @@ public class ReservationCrudServiceImpl implements ReservationCrudService {
 
     //Coge la reserva por el id del restaurante por reservation
     @Override
+    /**
+     * Retrieves a reservation document by its identifier.
+     *
+     * @return reactive result of the operation
+     */
     public Mono<ReservationDocument> getReservationById(UUID reservationId) {
         return reservationRepository
                 .findById(reservationId)
@@ -57,6 +73,11 @@ public class ReservationCrudServiceImpl implements ReservationCrudService {
     }
 
     @Override
+    /**
+     * Retrieves reservation documents for a restaurant and optional status.
+     *
+     * @return reactive result of the operation
+     */
     public Flux<ReservationDocument> getByRestaurantId(UUID restaurantId, ReservationStatus status) {
         return this.restaurantRepository.findById(restaurantId) //Mono
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("Restaurant not found")))
@@ -72,6 +93,11 @@ public class ReservationCrudServiceImpl implements ReservationCrudService {
     }
 
     @Override
+    /**
+     * Updates an existing reservation.
+     *
+     * @return reactive result of the operation
+     */
     public Mono<ReservationDocument> updateReservation(UUID reservationId, ReservationDocument reservationDocument) {
 
         final var validations = List.of(
@@ -103,6 +129,11 @@ public class ReservationCrudServiceImpl implements ReservationCrudService {
     }
 
     @Override
+    /**
+     * Deletes an existing reservation.
+     *
+     * @return reactive result of the operation
+     */
     public Mono<Void> deleteReservation(UUID uuid) {
         return reservationRepository
                 .findById(uuid)

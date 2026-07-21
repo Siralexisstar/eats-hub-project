@@ -18,6 +18,9 @@ import java.util.Objects;
  * <p>MapStruct generates the implementation and registers it as a Spring bean.</p>
  */
 @Mapper(componentModel = "spring")
+/**
+ * MapStruct mapper that converts restaurant documents to response DTOs.
+ */
 public interface RestaurantMapper {
 
     /**
@@ -28,6 +31,11 @@ public interface RestaurantMapper {
      * @return restaurant data prepared for the API response
      */
     @Mapping(target = "globalRating", expression = "java(calculateAverageRating(document.getReviews()))")
+    /**
+     * Maps a source object to a response DTO.
+     *
+     * @return reactive result of the operation
+     */
     RestaurantResponse toResponse(RestaurantDocument document);
 
     /**

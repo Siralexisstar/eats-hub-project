@@ -19,6 +19,12 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * MongoDB document that stores restaurant catalog data.
+ */
+/**
+ * MongoDB document that stores restaurant catalog data.
+ */
 public class RestaurantDocument {
 
     @Id

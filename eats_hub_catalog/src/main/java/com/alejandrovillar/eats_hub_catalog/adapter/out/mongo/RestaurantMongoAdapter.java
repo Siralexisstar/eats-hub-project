@@ -27,6 +27,12 @@ import java.util.UUID;
 
 @Component
 @RequiredArgsConstructor
+/**
+ * MongoDB outbound adapter that retrieves restaurants for the application layer.
+ */
+/**
+ * MongoDB outbound adapter that retrieves restaurants for the application layer.
+ */
 public class RestaurantMongoAdapter implements RestaurantRepositoryPort {
 
     private final RestaurantRepository restaurantRepository;

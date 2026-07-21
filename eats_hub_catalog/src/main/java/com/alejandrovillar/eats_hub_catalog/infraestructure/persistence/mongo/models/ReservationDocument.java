@@ -16,6 +16,12 @@ import java.util.UUID;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * MongoDB document that stores reservation data.
+ */
+/**
+ * MongoDB document that stores reservation data.
+ */
 public class ReservationDocument {
 
     @Id

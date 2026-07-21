@@ -9,6 +9,12 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @Data
+/**
+ * Restaurant response DTO containing catalog data and aggregated rating information.
+ */
+/**
+ * Restaurant response DTO containing catalog data and aggregated rating information.
+ */
 public class RestaurantResponse {
 
     private String name;

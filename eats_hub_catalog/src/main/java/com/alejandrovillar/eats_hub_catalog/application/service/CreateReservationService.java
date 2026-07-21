@@ -19,14 +19,29 @@ import java.util.UUID;
  - ensure business rules
  - completely abstracted
 *  */
+/**
+ * Application service that implements the reservation creation use case.
+ * <p>
+ * It orchestrates restaurant lookup, business validation, availability checks, domain object
+ * creation, and persistence through output ports.
+ */
 @RequiredArgsConstructor
 @Slf4j
+/**
+ * Application service that implements the reservation creation use case.
+ */
 public class CreateReservationService implements CreateReservationUseCase {
 
     private final ReservationRepositoryPort reservationRepositoryPort;
     private final RestaurantRepositoryPort restaurantRepositoryPort;
     private final AvailabilityPort availabilityPort;
 
+    /**
+     * Creates a pending reservation when the restaurant exists, is open, and has availability.
+     *
+     * @param command reservation creation command
+     * @return created reservation
+     */
     @Override
     public Mono<Reservation> create(CreateReservationCommand command) {
 

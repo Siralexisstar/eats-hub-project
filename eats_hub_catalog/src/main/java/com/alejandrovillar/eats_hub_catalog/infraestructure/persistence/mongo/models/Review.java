@@ -14,6 +14,12 @@ import java.time.Instant;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+/**
+ * Embedded MongoDB document that represents a restaurant review.
+ */
+/**
+ * Embedded MongoDB document that represents a restaurant review.
+ */
 public class Review {
 
     private Object customerId;

@@ -17,17 +17,33 @@ import java.util.Objects;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+/**
+ * Restaurant catalog service implementation backed by the reactive MongoDB repository.
+ */
+/**
+ * Restaurant catalog service implementation backed by the reactive MongoDB repository.
+ */
 public class RestaurantCatalogServiceImpl implements RestaurantCatalogService {
 
     private final RestaurantRepository repo;
 
 
     @Override
+    /**
+     * Retrieves all available records.
+     *
+     * @return reactive result of the operation
+     */
     public Flux<RestaurantDocument> getAll() {
         return repo.findAll();
     }
 
     @Override
+    /**
+     * Retrieves restaurants that match the provided cuisine type.
+     *
+     * @return reactive result of the operation
+     */
     public Flux<RestaurantDocument> getByCuisineType(String cuisineType) {
 
         return repo.findByCuisineType(cuisineType)
@@ -41,6 +57,11 @@ public class RestaurantCatalogServiceImpl implements RestaurantCatalogService {
     }
 
     @Override
+    /**
+     * Retrieves a restaurant by name prefix.
+     *
+     * @return reactive result of the operation
+     */
     public Mono<RestaurantDocument> getRestaurantByName(String name) {
         return repo.findByNameStartingWithIgnoreCase(name)
                 .doOnSubscribe(subs -> log.info("Init search with param, {}", name))
@@ -53,6 +74,11 @@ public class RestaurantCatalogServiceImpl implements RestaurantCatalogService {
     }
 
     @Override
+    /**
+     * Retrieves restaurants that match any of the provided price ranges.
+     *
+     * @return reactive result of the operation
+     */
     public Flux<RestaurantDocument> getRestaurantByPriceRange(List<PriceRange> priceRanges) {
         return repo.findByPriceRangeIn(priceRanges)
                 //Could be used to return cache data
@@ -63,6 +89,11 @@ public class RestaurantCatalogServiceImpl implements RestaurantCatalogService {
 
     //Improving this query
     @Override
+    /**
+     * Retrieves restaurants located in the provided city.
+     *
+     * @return reactive result of the operation
+     */
     public Flux<RestaurantDocument> getRestaurantByAddressCity(String addressCity) {
         return repo.findAll()
                 //search all the addresses

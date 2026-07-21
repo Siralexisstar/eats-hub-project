@@ -14,6 +14,16 @@ import lombok.Builder;
 
 
 @Builder
+/**
+ * Embedded value object that stores restaurant contact information.
+ */
+/**
+ * Embedded value object that stores restaurant contact information.
+ *
+ * @param iphone restaurant phone number
+ * @param email restaurant email
+ * @param website restaurant website URL
+ */
 public record ContactInfo(
         String iphone,
         String email,

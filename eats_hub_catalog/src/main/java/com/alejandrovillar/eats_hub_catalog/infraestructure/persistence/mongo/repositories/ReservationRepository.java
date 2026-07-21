@@ -9,11 +9,22 @@ import reactor.core.publisher.Mono;
 import java.util.UUID;
 
 //Same new Repository extends from ReactiveRepo and <T, Identifier>
+/**
+ * Reactive MongoDB repository for reservation documents.
+ */
+/**
+ * Reactive MongoDB repository for reservation documents.
+ */
 public interface ReservationRepository extends ReactiveMongoRepository<ReservationDocument, UUID> {
 
     //find by id
     Mono<ReservationDocument> findById (String restaurantId);
 
     //find byId and status
+    /**
+     * Finds reservations by restaurant identifier and status.
+     *
+     * @return reactive result of the operation
+     */
     Flux<ReservationDocument> findByRestaurantIdAndStatus(String restaurantId, ReservationStatus status);
 }

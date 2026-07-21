@@ -20,6 +20,12 @@ import java.util.concurrent.TimeUnit;
 @Configuration
 @EnableReactiveMongoRepositories("com.alejandrovillar.eats_hub_catalog")
 @PropertySource(value = "classpath:mongo-connection.properties")
+/**
+ * Reactive MongoDB configuration for the catalog service.
+ */
+/**
+ * Reactive MongoDB configuration for the catalog service.
+ */
 public class MongoConfig extends AbstractReactiveMongoConfiguration {
 
     //Configuring the values importes from mongo-connection.properties
@@ -51,6 +57,11 @@ public class MongoConfig extends AbstractReactiveMongoConfiguration {
     private Long maxConnectionLifeTime;
 
     //Returning the database name (Obligatory)
+    /**
+     * Returns the MongoDB database name used by Spring Data.
+     *
+     * @return configured database name
+     */
     @Override
     protected String getDatabaseName() {
         return this.database;
@@ -87,6 +98,12 @@ public class MongoConfig extends AbstractReactiveMongoConfiguration {
     //Exposes the bean to inyect in other components
     //Like a Autowired imyecting the mongoClient before created
     @Bean
+    /**
+     * Creates a reactive Mongo template for low-level MongoDB operations.
+     *
+     * @param mongoClient configured reactive MongoDB client
+     * @return reactive Mongo template
+     */
     public ReactiveMongoTemplate reactiveMongoTemplate(MongoClient mongoClient) {
         return new ReactiveMongoTemplate(mongoClient, getDatabaseName());
     }

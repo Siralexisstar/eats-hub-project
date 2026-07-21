@@ -6,6 +6,9 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+/**
+ * Legacy reservation request DTO used by the persistence-oriented service layer.
+ */
 public class ReservationRequest {
 
     private String restaurantId;

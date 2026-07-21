@@ -19,6 +19,9 @@ import java.util.Objects;
  * <p>MapStruct generates the implementation and registers it as a Spring bean.</p>
  */
 @Mapper(componentModel = "spring")
+/**
+ * MapStruct mapper that converts reservation DTOs and MongoDB documents.
+ */
 public interface ReservationMapper {
 
     /**
@@ -34,6 +37,11 @@ public interface ReservationMapper {
             target = "dateTime",
             expression = "java(document.getDate() + \",\" + document.getTime())"
     )
+    /**
+     * Maps a source object to a response DTO.
+     *
+     * @return reactive result of the operation
+     */
     ReservationResponse toResponse(ReservationDocument document);
 
     /**
@@ -49,6 +57,11 @@ public interface ReservationMapper {
     @Mapping(target = "date", ignore = true)
     @Mapping(target = "time", ignore = true)
     @Mapping(target = "status", ignore = true)
+    /**
+     * Maps a request DTO to a MongoDB document.
+     *
+     * @return reactive result of the operation
+     */
     ReservationDocument toDocument(ReservationRequest request);
 
     /**

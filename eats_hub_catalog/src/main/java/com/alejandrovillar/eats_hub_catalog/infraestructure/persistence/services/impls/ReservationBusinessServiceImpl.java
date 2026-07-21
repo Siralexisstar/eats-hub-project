@@ -17,12 +17,23 @@ import java.util.UUID;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+/**
+ * Business service implementation that maps reservation DTOs and delegates persistence operations.
+ */
+/**
+ * Business service implementation that maps reservation DTOs and delegates persistence operations.
+ */
 public class ReservationBusinessServiceImpl implements ReservationBusinessService {
 
     private final ReservationCrudService reservationCrudService;
     private final ReservationMapper reservationMapper;
     
     @Override
+    /**
+     * Creates a reservation using the provided request or document.
+     *
+     * @return reactive result of the operation
+     */
     public Mono<String> createReservation(ReservationRequest reservation) {
         log.info("Creating reservation: {}", reservation);
 
@@ -36,6 +47,11 @@ public class ReservationBusinessServiceImpl implements ReservationBusinessServic
     }
 
     @Override
+    /**
+     * Reads one reservation by its identifier.
+     *
+     * @return reactive result of the operation
+     */
     public Mono<ReservationResponse> readByReservationId(UUID id) {
         log.info("Reading reservation with id {}", id);
 
@@ -46,6 +62,11 @@ public class ReservationBusinessServiceImpl implements ReservationBusinessServic
 
 
     @Override
+    /**
+     * Reads reservations associated with a restaurant.
+     *
+     * @return reactive result of the operation
+     */
     public Flux<ReservationResponse> readByRestaurantId(UUID restaurantId, ReservationStatus status) {
         log.info("Reading reservation with restaurant id {}", restaurantId);
 
@@ -55,6 +76,11 @@ public class ReservationBusinessServiceImpl implements ReservationBusinessServic
     }
 
     @Override
+    /**
+     * Updates an existing reservation.
+     *
+     * @return reactive result of the operation
+     */
     public Mono<ReservationResponse> updateReservation(UUID id, ReservationRequest reservation) {
         log.info("Updating reservation with id {}", id);
 
@@ -66,6 +92,11 @@ public class ReservationBusinessServiceImpl implements ReservationBusinessServic
     }
 
     @Override
+    /**
+     * Deletes an existing reservation.
+     *
+     * @return reactive result of the operation
+     */
     public Mono<Void> deleteReservation(UUID id) {
         log.info("Deleting reservation with id {}", id);
 

@@ -24,6 +24,12 @@ import java.util.UUID;
 @Component
 @Slf4j
 @AllArgsConstructor
+/**
+ * Component that groups reactive business validations for reservation documents.
+ */
+/**
+ * Component that groups reactive business validations for reservation documents.
+ */
 public class ReservationValidator {
 
     private final RestaurantRepository restaurantRepository;
@@ -32,6 +38,14 @@ public class ReservationValidator {
 
     //Method to reduce the validations
     //How it works? Read all the validations and detect what it is. Then throws the error.
+    /**
+     * Applies all validators sequentially to the provided input.
+     *
+     * @param input object to validate
+     * @param validations validators to execute
+     * @param <T> validated object type
+     * @return empty completion when all validations pass
+     */
     public <T> Mono<Void> applyValidations(T input, List<BusinessValidator<T>> validations) {
 
         if (validations.isEmpty()) {
@@ -47,6 +61,11 @@ public class ReservationValidator {
     }
 
     //Validate the restaurant it's not closed for sure
+    /**
+     * Builds a validator that verifies that the restaurant is open for the requested time.
+     *
+     * @return validator for restaurant opening hours
+     */
     public BusinessValidator<ReservationDocument> validateRestaurantNotClosed() {
 
         return reservation -> {
@@ -67,6 +86,11 @@ public class ReservationValidator {
     }
 
     //Validate the viability for the restaurant
+    /**
+     * Builds a validator that verifies planner availability for the reservation.
+     *
+     * @return validator for restaurant availability
+     */
     public BusinessValidator<ReservationDocument> validateAvailability() {
         return reservation -> {
 

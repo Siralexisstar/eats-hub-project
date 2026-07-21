@@ -6,6 +6,9 @@ import java.util.UUID;
 
 
 //Business Class
+/**
+ * Immutable domain model that represents a restaurant reservation.
+ */
 public class Reservation {
 
     private final UUID id;

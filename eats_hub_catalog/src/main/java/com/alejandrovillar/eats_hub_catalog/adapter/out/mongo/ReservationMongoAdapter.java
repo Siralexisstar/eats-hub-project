@@ -20,6 +20,12 @@ import java.util.UUID;
 //repo X final tech implementation
 @Component
 @RequiredArgsConstructor
+/**
+ * MongoDB outbound adapter that persists reservation domain objects.
+ */
+/**
+ * MongoDB outbound adapter that persists reservation domain objects.
+ */
 public class ReservationMongoAdapter implements ReservationRepositoryPort {
 
     private final ReservationRepository reservationRepository;
