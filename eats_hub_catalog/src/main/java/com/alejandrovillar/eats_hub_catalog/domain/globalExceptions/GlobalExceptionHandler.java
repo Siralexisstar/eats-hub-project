@@ -31,10 +31,10 @@ public class GlobalExceptionHandler {
   public ResponseEntity<Map<String, String>> handleBusinessException(BusinessException ex) {
     Map<String, String> response = new HashMap<>();
 
-    response.put("error", "Not found");
+    response.put("error", "Business rule violation");
     response.put("message", ex.getMessage());
 
-    return ResponseEntity.status(HttpStatus.NOT_FOUND).body(response);
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(response);
   }
 
   @ExceptionHandler(WebExchangeBindException.class)

@@ -6,7 +6,7 @@ import com.alejandrovillar.eats_hub_catalog.interfaces.dtos.request.ReservationR
 import com.alejandrovillar.eats_hub_catalog.interfaces.dtos.response.ReservationResponse;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
+import org  .mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
