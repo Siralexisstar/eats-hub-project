@@ -9,16 +9,14 @@ import java.util.List;
 
 public interface RestaurantBusinessService {
 
+    Flux<RestaurantResponse> readAll();
 
-    Flux<RestaurantResponse> getAll();
+    Flux<RestaurantResponse> readByCuisineType(String cuisineType);
 
-    Flux<RestaurantResponse> getByCuisineType(String cuisineType);
+    Mono<RestaurantResponse> readByName(String name);
 
-    //Remember we can use @Query instead of normalized name
-    Mono<RestaurantResponse> getRestaurantByName(String name);
+    Flux<RestaurantResponse> readByPriceRangeIn(List<PriceRange> priceRanges);
 
-    Flux<RestaurantResponse> getRestaurantByPriceRange(List<PriceRange> priceRanges);
-
-    Flux<RestaurantResponse> getRestaurantByAddressCity(String addressCity);
+    Flux<RestaurantResponse> readByCity(String city);
 
 }

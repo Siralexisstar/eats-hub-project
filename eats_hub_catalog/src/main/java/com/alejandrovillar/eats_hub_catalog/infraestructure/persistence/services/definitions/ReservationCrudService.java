@@ -14,7 +14,7 @@ public interface ReservationCrudService {
 
     Mono<ReservationDocument> getReservationById(UUID reservationId);
 
-    Flux<ReservationDocument> getRestaurantByIdAndStatus(UUID restaurantId, ReservationStatus status);
+    Flux<ReservationDocument> getByRestaurantId(UUID restaurantId, ReservationStatus status);
 
     Mono<ReservationDocument> updateReservation(UUID restaurantId, ReservationDocument reservationDocument);
 

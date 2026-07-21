@@ -12,7 +12,7 @@ import java.util.UUID;
 public interface ReservationRepository extends ReactiveMongoRepository<ReservationDocument, UUID> {
 
     //find by id
-    Mono<ReservationDocument> findById (UUID restaurantId);
+    Mono<ReservationDocument> findById (String restaurantId);
 
     //find byId and status
     Flux<ReservationDocument> findByRestaurantIdAndStatus(String restaurantId, ReservationStatus status);

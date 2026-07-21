@@ -56,23 +56,19 @@ public class ReservationCrudServiceImpl implements ReservationCrudService {
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("Reservation not found with this id")));
     }
 
-
-    //Encontrar el restaurante por las reservas
     @Override
-    public Flux<ReservationDocument> getRestaurantByIdAndStatus(UUID restaurantId, ReservationStatus status) {
-        return restaurantRepository
-                .findById(restaurantId) //restaurant ID encuentra los restaurantes por ID
+    public Flux<ReservationDocument> getByRestaurantId(UUID restaurantId, ReservationStatus status) {
+        return this.restaurantRepository.findById(restaurantId) //Mono
                 .switchIfEmpty(Mono.error(new ResourceNotFoundException("Restaurant not found")))
                 .flatMapMany(restaurant -> {
                     if (Objects.isNull(status)) {
-                        log.info("Reading reservation with id, {}", restaurant.getId());
+                        log.info("Reading reservation with id {}", restaurant.getId());
+                        return this.reservationRepository.findById(restaurantId.toString());
                     }
-                    log.info("Getting the restaurant with id, {} and status {}", restaurant.getId(), status);
+                    log.info("Reading reservation with id {} and status {}", restaurant.getId(), status);
 
-                    //encuentra el restaurante por el estado de la reserva
-                    return reservationRepository.findByRestaurantIdAndStatus(restaurantId.toString(), status);
+                    return this.reservationRepository.findByRestaurantIdAndStatus(restaurantId.toString(), status);
                 });
-
     }
 
     @Override

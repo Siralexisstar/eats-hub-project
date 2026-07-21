@@ -10,13 +10,13 @@ import java.util.UUID;
 
 public interface ReservationBusinessService {
 
-    Mono<String> createReservation(ReservationRequest reservationDocument);
+    Mono<String> createReservation(ReservationRequest reservation);
 
-    Mono<ReservationResponse> getReservationById(UUID reservationId);
+    Mono<ReservationResponse> readByReservationId(UUID id);
 
-    Flux<ReservationResponse> getRestaurantByIdAndStatus(UUID restaurantId, ReservationStatus status);
+    Flux<ReservationResponse> readByRestaurantId(UUID restaurantId, ReservationStatus status);
 
-    Mono<ReservationResponse> updateReservation(UUID restaurantId, ReservationRequest reservationDocument);
+    Mono<ReservationResponse> updateReservation(UUID id, ReservationRequest reservation);
 
-    Mono<Void> deleteReservation(UUID uuid);
+    Mono<Void> deleteReservation(UUID id);
 }
